@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var LinkModel = function() {
 
 	var LinkSchema = mongoose.Schema({
-		id: Object id, title: String, url: String, votesUp: Double, votesDown: Double
+		title: String, url: String, votesUp: Number, votesDown: Number 
 	});
 
 	return mongoose.model('Link', LinkSchema);
