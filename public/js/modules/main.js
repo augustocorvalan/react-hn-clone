@@ -1,19 +1,22 @@
 /** @jsx React.DOM */
 var React   = require('react');
 var Backbone = require("backbone");
-Backbone.$ = window.$ = require("jquery")
-
 var About = require('../react_components/About');
+
+var LinkForm = require('../react_components/LinkForm');
+var LinkTable = require('../react_components/LinkTable');
+
+Backbone.$ = window.$ = require("jquery")
 
 Backbone.history.start();
 
 React.renderComponent(
-<About docLocation="js/docs/about_my_app.md"/>,
-	document.querySelector('.about_my_app')
+  <LinkTable pollInterval={500}/>,
+  document.querySelector('LinkTable')
 );
 
 React.renderComponent(
-<About docLocation="js/docs/about_how_to.md"/>,
-	document.querySelector('.about_how_to')
+  <LinkForm/>,
+  document.querySelector('LinkForm')
 );
 
