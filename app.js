@@ -7,6 +7,7 @@ var express = require('express')
   , args = process.argv.splice(2);
 
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser());
 
 require("./db/db").once('open', function callback () {
 	/*=== insert routes here ===*/
