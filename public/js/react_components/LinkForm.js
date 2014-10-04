@@ -26,10 +26,10 @@ var LinkForm = React.createClass({
 				<div className="form-group">
 						<input className="form-control" type="text" placeholder="url" ref="url"/>
 				</div>
-				<div className="form-group">
+				<div className="form-group hidden">
 						<input className="form-control" type="text" placeholder="votesUp" ref="votesUp"/>
 				</div>
-				<div className="form-group">
+				<div className="form-group hidden">
 						<input className="form-control" type="text" placeholder="votesDown" ref="votesDown"/>
 				</div>
 				
@@ -46,13 +46,11 @@ var LinkForm = React.createClass({
 	handleSubmit : function() {
 		var title = this.refs.title.getDOMNode().value.trim();
 		var url = this.refs.url.getDOMNode().value.trim();
-		var votesUp = this.refs.votesUp.getDOMNode().value.trim();
-		var votesDown = this.refs.votesDown.getDOMNode().value.trim();
+		var votesUp = this.refs.votesUp.getDOMNode().value.trim() || 0;
+		var votesDown = this.refs.votesDown.getDOMNode().value.trim() || 0;
 		
 		if (!title) {return false;}
 		if (!url) {return false;}
-		if (!votesUp) {return false;}
-		if (!votesDown) {return false;}
 		
 		var data = {};
 		data.title = title;
