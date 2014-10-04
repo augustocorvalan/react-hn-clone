@@ -1,10 +1,10 @@
 /** @jsx React.DOM */
 
 /*
-	var LinkTable = require('../react_components/LinkTable'); 
+	var LinkList = require('../react_components/LinkList'); 
 	React.renderComponent(
-		<LinkTable pollInterval={500}/>,
-		document.querySelector('LinkTable')
+		<LinkList pollInterval={500}/>,
+		document.querySelector('LinkList')
 	);
 */
 
@@ -13,7 +13,7 @@ var React = require('react')
 	, LinkModel = require("../modules/models/LinkModel")
 	, LinksCollection = require("../modules/models/LinksCollection");
 
-var LinkTable = React.createClass({
+var LinkList = React.createClass({
 
 	getInitialState: function() {
 		return {data : [], message : ""};
@@ -22,36 +22,12 @@ var LinkTable = React.createClass({
 	render: function() {
 
 		var linksRows = this.state.data.map(function(link){
-			var deleteLink = "#delete_link/" + link._id;
-
 			return (
-				<tr>
-					<td>{link.title}</td>
-					<td>{link.url}</td>
-					<td>{link.votesUp}</td>
-					<td>{link.votesDown}</td>
-					
-					<td><a href={deleteLink}>delete{" "}{link._id}</a></td>
-				</tr>
-			);
+				<li className="list-group-item"><a href={link.url}>{link.title}</a></li>
+			)
 		});
 
-		return (
-			<div className="table-responsive">
-				<strong>{this.state.message}</strong>
-				<table className="table table-striped table-bordered table-hover" >
-					<thead>
-						<tr>
-							<th>title</th><th>url</th><th>votesUp</th><th>votesDown</th>
-							<th>_id</th>
-						</tr>
-					</thead>
-					<tbody>
-						{linksRows}
-					</tbody>
-				</table>
-			</div>
-		);
+		return <ul className="list-group">{linksRows}</ul>
 	},	
 
 	getLinks : function() {
@@ -80,7 +56,7 @@ var LinkTable = React.createClass({
 				"delete_link/:id" : "deleteLink"
 			},
 			initialize : function() {
-				console.log("Initialize router of LinkTable component");
+				console.log("Initialize router of LinkList component");
 			},
 			deleteLink : function(id){
 				console.log("=== delete link ===", id);
@@ -93,4 +69,4 @@ var LinkTable = React.createClass({
 
 });
 
-module.exports = LinkTable;
+module.exports = LinkList;
