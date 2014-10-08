@@ -11,7 +11,10 @@
 var React = require('react')
 	, Backbone = require("backbone")
 	, LinkModel = require("../modules/models/LinkModel")
-	, LinksCollection = require("../modules/models/LinksCollection");
+	, LinksCollection = require("../modules/models/LinksCollection")
+	, VoteLink = require('./VoteLink')
+	, StringHelpers = require('../modules/StringHelpers');
+
 //private variables
 var links = new LinksCollection();
 
@@ -25,7 +28,13 @@ var LinkList = React.createClass({
 
 		var linksRows = this.state.data.map(function(link){
 			return (
-				<li className="list-group-item"><a href={link.url}>{link.title}</a></li>
+				<li className="list-group-item">
+					<a href={link.url}>{link.title}</a>
+					<div className="pull-right">
+						<VoteLink action="up" id={link._id} voteNumber={link.votesUp} glyphClass="thumbs-up" />
+						<VoteLink action="down" id={link._id} voteNumber={link.votesDown} glyphClass="thumbs-down" />
+					</div>
+				</li>
 			)
 		});
 
@@ -49,17 +58,19 @@ var LinkList = React.createClass({
 	},
 
 	componentDidMount: function() {
+		var self = this;
 		var Router = Backbone.Router.extend({
 			routes : {
-				"delete_link/:id" : "deleteLink"
+				"vote/:action/:id" : "vote"
 			},
-			initialize : function() {
-				console.log("Initialize router of LinkList component");
-			},
-			deleteLink : function(id){
-				console.log("=== delete link ===", id);
-				new LinkModel({_id:id}).destroy();
-				this.navigate('/');
+			vote: function (action, id) {
+				var attribute = 'votes' + StringHelpers.capitalize(action);
+				var link = links.get(id);
+				var prevValue = link.get(attribute);
+
+				link.set(attribute, prevValue + 1).save();
+				//optimistically update UI without waiting for server
+				self.setState({ data: links.toJSON(), message: Date() });
 			}
 		});
 		this.router = new Router()
