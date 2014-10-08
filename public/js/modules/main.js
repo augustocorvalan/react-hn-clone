@@ -11,7 +11,7 @@ Backbone.$ = window.$ = require("jquery")
 Backbone.history.start();
 
 React.renderComponent(
-  <LinkList pollInterval={500}/>,
+  <LinkList />,
   document.querySelector('LinkList')
 );
 

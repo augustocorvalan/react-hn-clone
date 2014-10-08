@@ -12,6 +12,8 @@ var React = require('react')
 	, Backbone = require("backbone")
 	, LinkModel = require("../modules/models/LinkModel")
 	, LinksCollection = require("../modules/models/LinksCollection");
+//private variables
+var links = new LinksCollection();
 
 var LinkList = React.createClass({
 
@@ -31,9 +33,6 @@ var LinkList = React.createClass({
 	},	
 
 	getLinks : function() {
-
-		var links = new LinksCollection();
-
 		links.fetch()
 			.done(function(data){
 				this.setState({data : links.toJSON(), message : Date()});
@@ -47,7 +46,6 @@ var LinkList = React.createClass({
 	
 	componentWillMount: function() {
 		this.getLinks();
-		setInterval(this.getLinks, this.props.pollInterval);
 	},
 
 	componentDidMount: function() {
