@@ -67,6 +67,15 @@ var LinkList = React.createClass({
 				var attribute = 'votes' + StringHelpers.capitalize(action);
 				var link = links.get(id);
 				var prevValue = link.get(attribute);
+				var voteStorageKey = 'v' + id;
+
+				//TODO: once the concept of user has been introduced, voting history should go in the DB
+				if (localStorage.getItem(voteStorageKey)) {
+					//don't do anything if user has already voted on this story
+					return;
+				} else {
+					localStorage.setItem(voteStorageKey, action);
+				}
 
 				link.set(attribute, prevValue + 1).save();
 				//optimistically update UI without waiting for server
