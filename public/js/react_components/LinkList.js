@@ -25,14 +25,14 @@ var LinkList = React.createClass({
 	},
 
 	render: function() {
-
+		var self = this;
 		var linksRows = this.state.data.map(function(link){
 			return (
-				<li className="list-group-item">
+				<li className="list-group-item" key={link._id}>
 					<a href={link.url}>{link.title}</a>
 					<div className="pull-right">
-						<VoteLink action="up" id={link._id} voteNumber={link.votesUp} glyphClass="thumbs-up" />
-						<VoteLink action="down" id={link._id} voteNumber={link.votesDown} glyphClass="thumbs-down" />
+						<VoteLink action="up" id={link._id} voteNumber={link.votesUp} glyphClass="thumbs-up" clicked={self.isClicked(link._id, 'up')}/>
+						<VoteLink action="down" id={link._id} voteNumber={link.votesDown} glyphClass="thumbs-down" clicked={self.isClicked(link._id, 'down')}/>
 					</div>
 				</li>
 			)
@@ -40,6 +40,10 @@ var LinkList = React.createClass({
 
 		return <ul className="list-group">{linksRows}</ul>
 	},	
+
+	isClicked: function (id, action) {
+		return localStorage.getItem('v' + id) === action;
+	},
 
 	getLinks : function() {
 		links.fetch()

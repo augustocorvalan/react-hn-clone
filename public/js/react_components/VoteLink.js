@@ -13,15 +13,23 @@ var React = require('react/addons');
 var VoteLink = React.createClass({
 	render: function() {
 		var href = ['#vote', this.props.action, this.props.id].join('/');
+		var cx = React.addons.classSet;
 		var iconClasses = {
-			glyphicon: true 
+			glyphicon: true,
+			success: this.props.clicked
+		};
+
+		var linkClasses = {
+			"vote-link": true,
+			"success": this.props.clicked
 		};
 
 		iconClasses['glyphicon-' + this.props.glyphClass] = true;
+		linkClasses['vote-link-' + this.props.action] = true;
 
 		return (
-			<a href={href}>
-				{this.props.voteNumber} <span className={React.addons.classSet(iconClasses)}></span>
+			<a href={href} className={cx(linkClasses)}>
+				<span className="vote-link-number">{this.props.voteNumber}</span> <span className={cx(iconClasses)}></span>
 			</a>
 		);
 	}
