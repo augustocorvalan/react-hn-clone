@@ -1,0 +1,40 @@
+.vote-link {
+	padding-right: 0.66em;
+	color: #777;
+}
+
+.vote-link:hover {
+	text-decoration: none;
+}
+
+.vote-link:last-child {
+	padding-right: 0;
+}
+
+.vote-link-up:hover {
+	color: #5cb85c;
+}
+
+.vote-link-up.success {
+	color: #5cb85c;
+}
+
+.vote-link-up.success:hover {
+	color: #449d44;	
+}
+
+.vote-link-down:hover {
+	color: #d9534f;	
+}
+
+.vote-link-down.success {
+	color: #d9534f;	
+}
+
+.vote-link-down.success:hover {
+	color: #c9302c;
+}
+
+.vote-link-number {
+	padding-right: 0.33em;
+}
