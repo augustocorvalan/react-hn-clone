@@ -13,10 +13,6 @@ var React = require('react')
 
 var LinkForm = React.createClass({
 
-	getInitialState: function() {
-		return {data : [], message : ""};
-	},
-
 	render: function() {
 		return (
 			<form role="form" className="form-horizontal" onSubmit={this.handleSubmit}>
@@ -36,7 +32,6 @@ var LinkForm = React.createClass({
 				<div className="form-group">
 					<input className="btn btn-primary" type="submit" value="Add Link" />
 				</div>
-				<div className="form-group"><strong>{this.state.message}</strong></div>
 			</form>
 		);
 	},
@@ -59,24 +54,20 @@ var LinkForm = React.createClass({
 		data.votesDown = votesDown;
 		
 
-		var link= new LinkModel(data);
+		var link = new LinkModel(data);
 
 		link.save()
 			.done(function(data) {
-				this.setState({
-					message : link.get("_id") + " added!"
-				});
 				this.refs.title.getDOMNode().value = '';
 				this.refs.url.getDOMNode().value = '';
 				this.refs.votesUp.getDOMNode().value = '';
 				this.refs.votesDown.getDOMNode().value = '';
 				
 				this.refs.title.getDOMNode().focus();
+
+				this.props.onFormSubmit(link);
 			}.bind(this))
 			.fail(function(err) {
-				this.setState({
-					message  : err.responseText + " " + err.statusText
-				});
 			}.bind(this));
 
 		return false;
