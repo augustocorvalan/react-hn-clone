@@ -2,8 +2,10 @@
 
 var React = require('react')
 	, Backbone = require("backbone")
+	, _ = require('underscore')
 	, LinkList = require('./LinkList')
 	, LinkForm = require('./LinkForm')
+	, GlyphButton = require('./GlyphButton')
 	, LinkModel = require("../modules/models/LinkModel")
 	, LinksCollection = require("../modules/models/LinksCollection")
 	, StringHelpers = require('../modules/StringHelpers');
@@ -13,7 +15,11 @@ var links = new LinksCollection();
 
 var LinkContainer = React.createClass({
 	getInitialState: function() {
-		return {data : [], message : ""};
+		return {
+			data : [], 
+			message : "",
+			dateSortActive: true
+		};
 	},
 
 	render: function () {
@@ -23,6 +29,13 @@ var LinkContainer = React.createClass({
 					<LinkForm onFormSubmit={this.handleFormSubmit}/>
 				</div>
 				<div className="col-md-6">
+					<div className="sort-buttons">
+						Sort By:
+						<div className="btn-group">
+							<GlyphButton active={this.state.dateSortActive} handleClick={this.handleDateSort} glyphClass="time"/>
+							<GlyphButton active={!this.state.dateSortActive} handleClick={this.handleVoteSort} glyphClass="upload"/>
+		      			</div>
+		      		</div>	
 					<LinkList links={this.state.data}/>
 				</div>
 			</div>
@@ -44,6 +57,21 @@ var LinkContainer = React.createClass({
 					message  : err.responseText + " " + err.statusText
 				});
 			}.bind(this))
+	},
+
+	handleDateSort: function () {
+		this.sortLinks('created');
+	},
+
+	handleVoteSort: function () {
+		this.sortLinks('votesUp');
+	},
+
+	sortLinks: function (type, reverse) {
+		this.updateState({ 
+			data: links.setAndDoSort(type, reverse).toJSON(),
+			dateSortActive: !this.state.dateSortActive 
+		});
 	},
 
 	componentWillMount: function() {
@@ -76,6 +104,10 @@ var LinkContainer = React.createClass({
 			}
 		});
 		this.router = new Router()
+	},
+
+	updateState: function (updated) {
+		this.setState(_.extend(this.state, updated));
 	}
 
 });
